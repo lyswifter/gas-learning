@@ -6,30 +6,74 @@ from rest_framework import generics
 from .models import BlockCateInfo, BlockInfo, MpoolCateInfo, MpoolInfo
 from .serializers import BlockCateSerializer, BlockSerializer, MpoolCateSerializer, MpoolSerializer
 
-class Blockview(APIView):
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
+from .serializers import TrainingBlockSerializer, TrainingResultSerializer, TrainTiggerSerializer
+
+from subprocess import call
+
+class TrainningTiggerView(APIView):
+
+    def get(self, request):
+        """
+        TrainningTiggerView
+        """
+        return Response(status=status.HTTP_200_OK)
+
+    def post(self, request):
+        """
+        TrainningTiggerView
+        """
+        sts = call("python3 training.py")
+        print(sts)
+        return Response(status=status.HTTP_200_OK)
+
+class TrainningView(generics.ListCreateAPIView):
+    """
+    TrainningView
+    """
+    queryset = TrainingBlockModel.objects.all()
+    serializer_class = TrainingBlockSerializer
+
+class TrainingResultView(generics.ListCreateAPIView):
+    """
+    TrainingResultView
+    """
+    queryset = TrainingResultModel.objects.all()
+    serializer_class = TrainingResultSerializer
+
+
+# class Blockview(APIView):
+#     """
+#     Blockview
+#     """
+
+#     def get(self, request):
+#         """
+#         block view get method
+#         """
+
+#         q_set = BlockInfo.objects.all()
+#         s_set = BlockSerializer(instance=q_set, many=True)
+#         return Response(s_set.data, status=status.HTTP_200_OK)
+
+#     def post(self, request):
+#         """
+#         block view post method
+#         """
+
+#         s_set = BlockSerializer(data=request.data)
+#         if s_set.is_valid():
+#             s_set.save()
+#             return Response(data=s_set.data, status=status.HTTP_201_CREATED)
+#         return Response(data=s_set.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Blockview(generics.ListCreateAPIView):
     """
     Blockview
     """
 
-    def get(self, request):
-        """
-        block view get method
-        """
-
-        q_set = BlockInfo.objects.all()
-        s_set = BlockSerializer(instance=q_set, many=True)
-        return Response(s_set.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        """
-        block view post method
-        """
-
-        s_set = BlockSerializer(data=request.data)
-        if s_set.is_valid():
-            s_set.save()
-            return Response(data=s_set.data, status=status.HTTP_201_CREATED)
-        return Response(data=s_set.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = BlockInfo.objects.all()
+    serializer_class = BlockSerializer
 
 class BlockDeleteView(generics.DestroyAPIView):
     """

@@ -8,4 +8,8 @@ urlpatterns = [
     
     path("mpool/", views.Mpoolview.as_view(), name="mpool_view"),
     path("mpool/cate/", views.MpoolCateView.as_view(), name="mpool_cate_view"),
+
+    path("train/block/", views.TrainningView.as_view(), name="train_block_view"),
+    path("train/result/", views.TrainingResultView.as_view(), name="train_result_view"),
+    path("train/tigger/", views.TrainningTiggerView.as_view(), name="train_tigger_view"),
 ]

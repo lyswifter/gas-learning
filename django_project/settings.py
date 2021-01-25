@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'gas_learn',
     'album',
+    'django_crontab',
     'django.contrib.staticfiles',
 ]
 
@@ -131,7 +132,7 @@ STATICFILES_DIRS = [
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 5,
+    "PAGE_SIZE": 50,
     "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
@@ -151,3 +152,55 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ]
 }
+
+# 定时任务
+'''
+*    *    *    *    * ：分别表示 分(0-59)、时(0-23)、天(1 - 31)、月(1 - 12) 、周(星期中星期几 (0 - 7) (0 7 均为周天))
+crontab范例：
+每五分钟执行    */5 * * * *
+每小时执行     0 * * * *
+每天执行       0 0 * * *
+每周一执行       0 0 * * 1
+每月执行       0 0 1 * *
+每天23点执行   0 23 * * *
+'''
+CRONJOBS = [
+    ('1 * * * *', 'gas_learn.cron.my_cron_job', ' >> /tmp/logs/gas_learn.log'), # 注意：/tmp/logs 目录要手动创建
+]
+
+# Celery配置
+# from kombu import Exchange, Queue
+
+# # 设置任务接受的类型，默认是{'json'}
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# # 设置task任务序列列化为json
+# CELERY_TASK_SERIALIZER = 'json'
+# # 请任务接受后存储时的类型
+# CELERY_RESULT_SERIALIZER = 'json'
+# # 时间格式化为中国时间
+# CELERY_TIMEZONE = 'Asia/Shanghai'
+# # 是否使用UTC时间
+# CELERY_ENABLE_UTC = False
+# # 指定borker为redis 如果指定rabbitmq CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+# # 指定存储结果的地方，支持使用rpc、数据库、redis等等，具体可参考文档 # CELERY_RESULT_BACKEND = 'db+mysql://scott:tiger@localhost/foo' # mysql 作为后端数据库
+# CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
+# # 设置任务过期时间 默认是一天，为None或0 表示永不过期
+# CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24
+# # 设置worker并发数，默认是cpu核心数
+# # CELERYD_CONCURRENCY = 12
+# # 设置每个worker最大任务数
+# CELERYD_MAX_TASKS_PER_CHILD = 100
+# # 指定任务的位置
+# CELERY_IMPORTS = (
+#     'gas_learn.task',
+# )
+# # 使用beat启动Celery定时任务
+# # schedule时间的具体设定参考：https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html
+# CELERYBEAT_SCHEDULE = {
+#     'add-every-10-seconds': {
+#         'task': 'gas_learn.task.scheduler_task',
+#         'schedule': 10,
+#         'args': ('hello', )
+#     },
+# }

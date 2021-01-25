@@ -1,5 +1,33 @@
 from rest_framework import serializers
 from .models import BlockInfo, BlockCateInfo, MpoolInfo, MpoolCateInfo
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
+
+class TrainTiggerSerializer(serializers.ModelSerializer):
+    """
+    TrainTiggerSerializer
+    """
+    class Meta:
+        model = TrainTiggerModel
+        fields = '__all__'
+
+class TrainingBlockSerializer(serializers.ModelSerializer):
+
+    """
+    TrainingBlockSerializer
+    """
+
+    class Meta:
+        model = TrainingBlockModel
+        fields = '__all__'
+
+class TrainingResultSerializer(serializers.ModelSerializer):
+    """
+    TrainingResultSerializer
+    """
+
+    class Meta:
+        model = TrainingResultModel
+        fields = '__all__'
 
 class BlockCateSerializer(serializers.ModelSerializer):
 

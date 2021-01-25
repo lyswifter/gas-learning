@@ -90,6 +90,63 @@ class MpoolCateInfo(models.Model):
     class Meta:
         ordering = ["created"]
 
+class TrainingBlockModel(models.Model):
+    epoch = models.IntegerField()
+    empty_num = models.IntegerField()
+    block_count = models.IntegerField()
+    parent_basefee = models.BigIntegerField()
+    count_block = models.IntegerField()
+    limit_total_block = models.BigIntegerField()
+    limit_avg_block = models.BigIntegerField()
+    cap_total_block = models.BigIntegerField()
+    cap_avg_block = models.BigIntegerField()
+    premium_total_block = models.BigIntegerField()
+    premium_avg_block = models.BigIntegerField()
+    backward = models.IntegerField()
+
+    def __str__(self):
+        return format(self.epoch)
+
+    class Meta:
+        db_table = 'trainingBlock'
+        managed = True
+        verbose_name = 'TrainBlock'
+        verbose_name_plural = 'TrainBlocks'
+
+class TrainingResultModel(models.Model):
+    epoch = models.IntegerField()
+    parent_basefee = models.BigIntegerField()
+    delta = models.BigIntegerField(default=0)
+    isPostive = models.BooleanField(default=True)
+    delta_proba = models.FloatField(default=0)
+
+    def __str__(self):
+        return format(self.epoch)
+
+    class Meta:
+        db_table = 'trainResult'
+        managed = True
+        verbose_name = 'TrainResult'
+        verbose_name_plural = 'TrainResults'
+
+
+class TrainTiggerModel(models.Model):
+    epoch = models.IntegerField()
+    isOk = models.BooleanField()
+
+    def __str__(self):
+        return format(self.epoch)
+
+    class Meta:
+        db_table = 'TrainTigger'
+        managed = True
+        verbose_name = 'TrainTiggerModel'
+        verbose_name_plural = 'TrainTiggerModels'
+
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import BlockInfo, BlockCateInfo, MpoolInfo, MpoolCateInfo
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
 
 # Register your models here.
 
@@ -26,4 +27,22 @@ class MpoolCateInfoAdmin(admin.ModelAdmin):
     list_display = ("cate_code", "count")
     search_fields = list_display
     list_filter = list_display
+
+@admin.register(TrainingBlockModel)
+class TrainingBlockModelAdmin(admin.ModelAdmin):
+    list_display = ("epoch", "empty_num", "block_count", "parent_basefee", "count_block", "limit_total_block", "limit_avg_block", "cap_total_block", "cap_avg_block", "premium_total_block", "premium_avg_block")
+    search_fields = ("epoch", "block_count")
+    list_filter = search_fields
+
+@admin.register(TrainingResultModel)
+class TrainingResultModelAdmin(admin.ModelAdmin):
+    list_display = ("epoch", "parent_basefee")
+    search_fields = list_display
+    list_filter = search_fields
+
+@admin.register(TrainTiggerModel)
+class TrainTiggerModelAdmin(admin.ModelAdmin):
+    list_display = ("epoch", "isOk")
+    search_fields = list_display
+    list_filter = search_fields
 
