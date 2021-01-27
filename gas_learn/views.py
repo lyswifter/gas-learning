@@ -1,5 +1,7 @@
 from subprocess import call
 
+import pandas as pd
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -15,9 +17,9 @@ from .serializers import TrainingBlockSerializer, TrainingResultSerializer, Trai
 from .serializers import ForecastDataSerializer, ForecastResultSerializer, ForecastTiggerSerializer
 
 from .train import Training
+from .consts import ORIGINAL_DATA_FILE
 
 class ForecastTiggerView(APIView):
-
     def get(self, request):
         """
         ForecastTiggerView
@@ -35,6 +37,7 @@ class ForecastTiggerView(APIView):
         train_obj.train()
         return Response(status=status.HTTP_200_OK)
 
+
 class ForecastDataView(generics.ListCreateAPIView):
     """
     ForecastDataView
@@ -42,12 +45,14 @@ class ForecastDataView(generics.ListCreateAPIView):
     queryset = ForecastDataModel.objects.all()
     serializer_class = ForecastDataSerializer
 
+
 class ForecastResultView(generics.ListCreateAPIView):
     """
     ForecastResultView
     """
     queryset = ForecastResultModel.objects.all()
     serializer_class = ForecastResultSerializer
+
 
 class ForecastResultDetailView(generics.RetrieveAPIView):
     """
@@ -57,10 +62,11 @@ class ForecastResultDetailView(generics.RetrieveAPIView):
     queryset = ForecastResultModel.objects.all()
     serializer_class = ForecastResultSerializer
 
+
 # /////////////////////////////////////////////////////////////////////
 
-class TrainingTiggerView(APIView):
 
+class TrainingTiggerView(APIView):
     def get(self, request):
         """
         TrainningTiggerView
@@ -71,10 +77,9 @@ class TrainingTiggerView(APIView):
         """
         TrainningTiggerView
         """
-        sts = call("python3 /home/ly/training.py", shell=True)
-        print(sts)
 
         return Response(status=status.HTTP_200_OK)
+
 
 class TrainningDataView(generics.ListCreateAPIView):
     """
@@ -83,12 +88,40 @@ class TrainningDataView(generics.ListCreateAPIView):
     queryset = TrainingBlockModel.objects.all()
     serializer_class = TrainingBlockSerializer
 
+    def perform_create(self, serializer):
+        # save to csv
+
+        columns_title = [
+            "epoch", "empty_num", "block_count", "parent_basefee",
+            "count_block", "limit_total_block", "limit_avg_block",
+            "cap_total_block", "cap_avg_block", "premium_total_block",
+            "premium_avg_block", "range", "forecast"
+        ]
+
+        csv_file = []
+        q_set = TrainingBlockModel.objects.all()
+        for ele in q_set:
+            tmp = [
+                ele.epoch, ele.empty_num, ele.block_count, ele.parent_basefee,
+                ele.count_block, ele.limit_total_block, ele.limit_avg_block,
+                ele.cap_total_block, ele.cap_avg_block,
+                ele.premium_total_block, ele.premium_avg_block, ele.backward, 0
+            ]
+            csv_file.append(tmp)
+
+        df_i = pd.DataFrame(csv_file, columns=columns_title)
+        df_i.to_csv(ORIGINAL_DATA_FILE, index=False)
+
+        serializer.save()
+
+
 class TrainingResultView(generics.ListCreateAPIView):
     """
     TrainingResultView
     """
     queryset = TrainingResultModel.objects.all()
     serializer_class = TrainingResultSerializer
+
 
 class TrainingResultDetailView(generics.RetrieveAPIView):
     """
@@ -97,6 +130,7 @@ class TrainingResultDetailView(generics.RetrieveAPIView):
     lookup_field = 'epoch'
     queryset = TrainingResultModel.objects.all()
     serializer_class = TrainingResultSerializer
+
 
 # /////////////////////////////////////////////////////////////////////
 
@@ -125,6 +159,7 @@ class TrainingResultDetailView(generics.RetrieveAPIView):
 #             return Response(data=s_set.data, status=status.HTTP_201_CREATED)
 #         return Response(data=s_set.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class Blockview(generics.ListCreateAPIView):
     """
     Blockview
@@ -133,6 +168,7 @@ class Blockview(generics.ListCreateAPIView):
     queryset = BlockInfo.objects.all()
     serializer_class = BlockSerializer
 
+
 class BlockDeleteView(generics.DestroyAPIView):
     """
     BlockDeleteView
@@ -140,13 +176,15 @@ class BlockDeleteView(generics.DestroyAPIView):
     queryset = BlockInfo.objects.all()
     serializer_class = BlockSerializer
 
-class  BlockCateView(generics.ListCreateAPIView):
+
+class BlockCateView(generics.ListCreateAPIView):
     """
     BlockCateView
     """
 
     queryset = BlockCateInfo.objects.all()
     serializer_class = BlockCateSerializer
+
 
 class Mpoolview(generics.ListCreateAPIView):
     """
@@ -156,11 +194,11 @@ class Mpoolview(generics.ListCreateAPIView):
     queryset = MpoolInfo.objects.all()
     serializer_class = MpoolSerializer
 
-class  MpoolCateView(generics.ListCreateAPIView):
+
+class MpoolCateView(generics.ListCreateAPIView):
     """
     MpoolCateView
     """
-    
+
     queryset = MpoolCateInfo.objects.all()
     serializer_class = MpoolCateSerializer
-    

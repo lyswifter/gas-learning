@@ -8,6 +8,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 
+from .consts import ORIGINAL_DATA_FILE
+
 class Training:
     cou = 0
 
@@ -18,8 +20,7 @@ class Training:
     train func
     """
     def train(self):
-        gas_response = requests.get('http://127.0.0.1:8000/train/block/')
-        gas = gas_response.json()
+        gas = pd.read_csv(ORIGINAL_DATA_FILE)
 
         rate_all = [1.6180339887, 2.058, 2.6180339887, 3.33, 4.236]
         forecast_l_all = [

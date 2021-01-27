@@ -8,6 +8,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 
+from .consts import ORIGINAL_DATA_FILE
+
 class Forecastting:
 
     cou = 0
@@ -18,10 +20,7 @@ class Forecastting:
     def forecast(self):
         L2LR = pickle.load(open('L2LR.pickle', 'rb'))
 
-        # gas=pd.read_csv('block_new')
-
-        gas_response = requests.get('http://127.0.0.1:8000/train/block/')
-        gas = gas_response.json()
+        gas=pd.read_csv(ORIGINAL_DATA_FILE)
 
         rate_all = [1.6180339887, 2.058, 2.6180339887, 3.33, 4.236]
         forecast_l_all = [
@@ -173,16 +172,3 @@ class Forecastting:
         proba_positive, proba_negtive = L2LR.predict_proba(gas_test)
 
         print(isIncrease, proba_negtive, proba_positive)
-
-        # trainResult = {
-        #     'epoch': '1212',
-        #     'parent_basefee': '121212',
-        #     'delta': 12323223,
-        #     'isIncrease': isIncrease,
-        #     'delta_proba': proba,
-        # }
-        # retUpResp = requests.post('http://127.0.0.1:8000/train/result/',
-        #                           data=trainResult)
-        # retUp = retUpResp.json()
-        # print(retUpResp.status_code)
-        # print(retUp)

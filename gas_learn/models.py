@@ -89,7 +89,7 @@ class MpoolCateInfo(models.Model):
 # /////////////////////////////////////////////////////////////
 
 class TrainingBlockModel(models.Model):
-    epoch = models.IntegerField()
+    epoch = models.IntegerField(unique=True)
     empty_num = models.IntegerField()
     block_count = models.IntegerField()
     parent_basefee = models.BigIntegerField()
@@ -112,7 +112,7 @@ class TrainingBlockModel(models.Model):
         verbose_name_plural = 'TrainDataModels'
 
 class TrainingResultModel(models.Model):
-    epoch = models.IntegerField()
+    epoch = models.IntegerField(unique=True)
     parent_basefee = models.BigIntegerField()
     delta = models.BigIntegerField(default=0)
     isPostive = models.BooleanField(default=True)
@@ -128,7 +128,7 @@ class TrainingResultModel(models.Model):
         verbose_name_plural = 'TrainResultModels'
 
 class TrainTiggerModel(models.Model):
-    epoch = models.IntegerField()
+    epoch = models.IntegerField(unique=True)
     isOk = models.BooleanField()
 
     def __str__(self):
@@ -143,7 +143,7 @@ class TrainTiggerModel(models.Model):
 # /////////////////////////////////////////////////////////////
 
 class ForecastDataModel(models.Model):
-    epoch = models.IntegerField()
+    epoch = models.IntegerField(unique=True)
     empty_num = models.IntegerField()
     block_count = models.IntegerField()
     parent_basefee = models.BigIntegerField()
@@ -166,7 +166,7 @@ class ForecastDataModel(models.Model):
         verbose_name_plural = 'ForecastDataModels'
 
 class ForecastResultModel(models.Model):
-    epoch = models.IntegerField()
+    epoch = models.IntegerField(unique=True)
     parent_basefee = models.BigIntegerField()
     delta = models.BigIntegerField(default=0)
     isPostive = models.BooleanField(default=True)
@@ -182,7 +182,7 @@ class ForecastResultModel(models.Model):
         verbose_name_plural = 'ForecastResultModels'
 
 class ForecastTiggerModel(models.Model):
-    epoch = models.IntegerField()
+    epoch = models.IntegerField(unique=True)
     isOk = models.BooleanField()
 
     def __str__(self):
