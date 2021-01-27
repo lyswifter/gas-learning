@@ -129,7 +129,6 @@ class TrainingResultModel(models.Model):
         verbose_name = 'TrainResult'
         verbose_name_plural = 'TrainResults'
 
-
 class TrainTiggerModel(models.Model):
     epoch = models.IntegerField()
     isOk = models.BooleanField()
@@ -142,6 +141,20 @@ class TrainTiggerModel(models.Model):
         managed = True
         verbose_name = 'TrainTiggerModel'
         verbose_name_plural = 'TrainTiggerModels'
+
+class ForecastTiggerModel(models.Model):
+    epoch = models.IntegerField()
+    isOk = models.BooleanField()
+
+    def __str__(self):
+        return format(self.epoch)
+
+    class Meta:
+        db_table = 'ForecastTigger'
+        managed = True
+        verbose_name = 'ForecastTiggerModel'
+        verbose_name_plural = 'ForecastTiggerModels'
+    
 
 
 

@@ -1,3 +1,5 @@
+from subprocess import call, run
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -6,12 +8,27 @@ from rest_framework import generics
 from .models import BlockCateInfo, BlockInfo, MpoolCateInfo, MpoolInfo
 from .serializers import BlockCateSerializer, BlockSerializer, MpoolCateSerializer, MpoolSerializer
 
-from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
-from .serializers import TrainingBlockSerializer, TrainingResultSerializer, TrainTiggerSerializer
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel, ForecastTiggerModel
+from .serializers import TrainingBlockSerializer, TrainingResultSerializer, TrainTiggerSerializer, ForecastTiggerSerializer
 
-from subprocess import call
+class ForecastTiggerView(APIView):
 
-class TrainningTiggerView(APIView):
+    def get(self, request):
+        """
+        ForecastTiggerView
+        """
+        return Response(status=status.HTTP_200_OK)
+
+    def post(self, request):
+        """
+        ForecastTiggerView
+        """
+        sts = call("python3 /home/ly/training.py", shell=True)
+        print(sts)
+
+        return Response(status=status.HTTP_200_OK)
+
+class TrainingTiggerView(APIView):
 
     def get(self, request):
         """
@@ -23,8 +40,10 @@ class TrainningTiggerView(APIView):
         """
         TrainningTiggerView
         """
-        sts = call("python3 training.py")
+        print("HERE")
+        sts = call("python3 /home/ly/training.py", shell=True)
         print(sts)
+
         return Response(status=status.HTTP_200_OK)
 
 class TrainningView(generics.ListCreateAPIView):

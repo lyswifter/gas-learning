@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import BlockInfo, BlockCateInfo, MpoolInfo, MpoolCateInfo
-from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel, ForecastTiggerModel
 
 # Register your models here.
 
@@ -42,6 +42,12 @@ class TrainingResultModelAdmin(admin.ModelAdmin):
 
 @admin.register(TrainTiggerModel)
 class TrainTiggerModelAdmin(admin.ModelAdmin):
+    list_display = ("epoch", "isOk")
+    search_fields = list_display
+    list_filter = search_fields
+
+@admin.register(ForecastTiggerModel)
+class ForecastTiggerModelAdmin(admin.ModelAdmin):
     list_display = ("epoch", "isOk")
     search_fields = list_display
     list_filter = search_fields
