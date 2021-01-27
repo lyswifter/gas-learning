@@ -1,4 +1,4 @@
-from subprocess import call, run
+from subprocess import call
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,8 +8,13 @@ from rest_framework import generics
 from .models import BlockCateInfo, BlockInfo, MpoolCateInfo, MpoolInfo
 from .serializers import BlockCateSerializer, BlockSerializer, MpoolCateSerializer, MpoolSerializer
 
-from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel, ForecastTiggerModel
-from .serializers import TrainingBlockSerializer, TrainingResultSerializer, TrainTiggerSerializer, ForecastTiggerSerializer
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
+from .models import ForecastDataModel, ForecastResultModel, ForecastTiggerModel
+
+from .serializers import TrainingBlockSerializer, TrainingResultSerializer, TrainTiggerSerializer
+from .serializers import ForecastDataSerializer, ForecastResultSerializer, ForecastTiggerSerializer
+
+from .train import Training
 
 class ForecastTiggerView(APIView):
 
@@ -23,10 +28,36 @@ class ForecastTiggerView(APIView):
         """
         ForecastTiggerView
         """
-        sts = call("python3 /home/ly/training.py", shell=True)
-        print(sts)
+        # sts = call("python3 /home/ly/training.py", shell=True)
+        # print(sts)
 
+        train_obj = Training(count=100)
+        train_obj.train()
         return Response(status=status.HTTP_200_OK)
+
+class ForecastDataView(generics.ListCreateAPIView):
+    """
+    ForecastDataView
+    """
+    queryset = ForecastDataModel.objects.all()
+    serializer_class = ForecastDataSerializer
+
+class ForecastResultView(generics.ListCreateAPIView):
+    """
+    ForecastResultView
+    """
+    queryset = ForecastResultModel.objects.all()
+    serializer_class = ForecastResultSerializer
+
+class ForecastResultDetailView(generics.RetrieveAPIView):
+    """
+    ForecastResultDetailView
+    """
+    lookup_field = 'epoch'
+    queryset = ForecastResultModel.objects.all()
+    serializer_class = ForecastResultSerializer
+
+# /////////////////////////////////////////////////////////////////////
 
 class TrainingTiggerView(APIView):
 
@@ -40,13 +71,12 @@ class TrainingTiggerView(APIView):
         """
         TrainningTiggerView
         """
-        print("HERE")
         sts = call("python3 /home/ly/training.py", shell=True)
         print(sts)
 
         return Response(status=status.HTTP_200_OK)
 
-class TrainningView(generics.ListCreateAPIView):
+class TrainningDataView(generics.ListCreateAPIView):
     """
     TrainningView
     """
@@ -60,6 +90,15 @@ class TrainingResultView(generics.ListCreateAPIView):
     queryset = TrainingResultModel.objects.all()
     serializer_class = TrainingResultSerializer
 
+class TrainingResultDetailView(generics.RetrieveAPIView):
+    """
+    TrainingResultDetailView
+    """
+    lookup_field = 'epoch'
+    queryset = TrainingResultModel.objects.all()
+    serializer_class = TrainingResultSerializer
+
+# /////////////////////////////////////////////////////////////////////
 
 # class Blockview(APIView):
 #     """

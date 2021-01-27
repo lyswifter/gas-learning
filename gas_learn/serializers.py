@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import BlockInfo, BlockCateInfo, MpoolInfo, MpoolCateInfo
-from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel, ForecastTiggerModel
+from .models import TrainingBlockModel, TrainingResultModel, TrainTiggerModel
+from .models import ForecastDataModel, ForecastResultModel, ForecastTiggerModel
 
 class ForecastTiggerSerializer(serializers.ModelSerializer):
     """
@@ -10,12 +11,42 @@ class ForecastTiggerSerializer(serializers.ModelSerializer):
         model = ForecastTiggerModel
         fields = '__all__'
 
+class ForecastResultSerializer(serializers.ModelSerializer):
+    """
+    ForecastResultSerializer
+    """
+
+    class Meta:
+        model = ForecastResultModel
+        fields = '__all__'
+
+class ForecastDataSerializer(serializers.ModelSerializer):
+
+    """
+    ForecastDataSerializer
+    """
+
+    class Meta:
+        model = ForecastDataModel
+        fields = '__all__'
+
+# ////////////////////////////////////////////////////////// 
+
 class TrainTiggerSerializer(serializers.ModelSerializer):
     """
     TrainTiggerSerializer
     """
     class Meta:
         model = TrainTiggerModel
+        fields = '__all__'
+
+class TrainingResultSerializer(serializers.ModelSerializer):
+    """
+    TrainingResultSerializer
+    """
+
+    class Meta:
+        model = TrainingResultModel
         fields = '__all__'
 
 class TrainingBlockSerializer(serializers.ModelSerializer):
@@ -28,14 +59,7 @@ class TrainingBlockSerializer(serializers.ModelSerializer):
         model = TrainingBlockModel
         fields = '__all__'
 
-class TrainingResultSerializer(serializers.ModelSerializer):
-    """
-    TrainingResultSerializer
-    """
-
-    class Meta:
-        model = TrainingResultModel
-        fields = '__all__'
+# ////////////////////////////////////////////////////////
 
 class BlockCateSerializer(serializers.ModelSerializer):
 
