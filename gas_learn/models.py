@@ -1,10 +1,10 @@
 from django.db import models
-
 """
 Models this application using
-""" 
+"""
 
-class BlockInfo(models.Model): 
+
+class BlockInfo(models.Model):
     """
     block info of messages
     """
@@ -23,6 +23,7 @@ class BlockInfo(models.Model):
         verbose_name = 'blockinfo'
         verbose_name_plural = 'blockinfos'
 
+
 class BlockCateInfo(models.Model):
     """
     category info the different types of message info
@@ -38,13 +39,18 @@ class BlockCateInfo(models.Model):
     gas_premium_avg = models.BigIntegerField(null=True, blank=True)
     gas_premium_total = models.BigIntegerField(null=True, blank=True)
     value = models.BigIntegerField(null=True, blank=True)
-    foreign = models.ForeignKey(BlockInfo, related_name="cates", on_delete=models.CASCADE, null=True, blank=True)
+    foreign = models.ForeignKey(BlockInfo,
+                                related_name="cates",
+                                on_delete=models.CASCADE,
+                                null=True,
+                                blank=True)
 
     def __str__(self):
         return format(self.epoch)
 
     class Meta:
         ordering = ["created"]
+
 
 class MpoolInfo(models.Model):
     """
@@ -63,6 +69,7 @@ class MpoolInfo(models.Model):
         verbose_name = 'mpoolinfo'
         verbose_name_plural = 'mpoolinfos'
 
+
 class MpoolCateInfo(models.Model):
     """
     category info the different types of message info
@@ -78,7 +85,11 @@ class MpoolCateInfo(models.Model):
     gas_premium_avg = models.BigIntegerField(null=True, blank=True)
     gas_premium_total = models.BigIntegerField(null=True, blank=True)
     value = models.BigIntegerField(null=True, blank=True)
-    foreign = models.ForeignKey(MpoolInfo, related_name="cates", on_delete=models.CASCADE, null=True, blank=True)
+    foreign = models.ForeignKey(MpoolInfo,
+                                related_name="cates",
+                                on_delete=models.CASCADE,
+                                null=True,
+                                blank=True)
 
     def __str__(self):
         return format(self.epoch)
@@ -86,7 +97,9 @@ class MpoolCateInfo(models.Model):
     class Meta:
         ordering = ["created"]
 
+
 # /////////////////////////////////////////////////////////////
+
 
 class TrainingBlockModel(models.Model):
     epoch = models.IntegerField(unique=True)
@@ -111,6 +124,7 @@ class TrainingBlockModel(models.Model):
         verbose_name = 'TrainDataModel'
         verbose_name_plural = 'TrainDataModels'
 
+
 class TrainingResultModel(models.Model):
     epoch = models.IntegerField(unique=True)
     parent_basefee = models.BigIntegerField()
@@ -127,6 +141,7 @@ class TrainingResultModel(models.Model):
         verbose_name = 'TrainResultModel'
         verbose_name_plural = 'TrainResultModels'
 
+
 class TrainTiggerModel(models.Model):
     epoch = models.IntegerField(unique=True)
     isOk = models.BooleanField()
@@ -140,7 +155,9 @@ class TrainTiggerModel(models.Model):
         verbose_name = 'TrainTiggerModel'
         verbose_name_plural = 'TrainTiggerModels'
 
+
 # /////////////////////////////////////////////////////////////
+
 
 class ForecastDataModel(models.Model):
     epoch = models.IntegerField(unique=True)
@@ -165,6 +182,7 @@ class ForecastDataModel(models.Model):
         verbose_name = 'ForecastDataModel'
         verbose_name_plural = 'ForecastDataModels'
 
+
 class ForecastResultModel(models.Model):
     epoch = models.IntegerField(unique=True)
     parent_basefee = models.BigIntegerField()
@@ -181,6 +199,7 @@ class ForecastResultModel(models.Model):
         verbose_name = 'ForecastResultModel'
         verbose_name_plural = 'ForecastResultModels'
 
+
 class ForecastTiggerModel(models.Model):
     epoch = models.IntegerField(unique=True)
     isOk = models.BooleanField()
@@ -193,17 +212,3 @@ class ForecastTiggerModel(models.Model):
         managed = True
         verbose_name = 'ForecastTiggerModel'
         verbose_name_plural = 'ForecastTiggerModels'
-    
-
-
-
-
-
-
-
-
-
-
-    
-
-

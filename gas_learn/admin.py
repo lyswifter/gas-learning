@@ -5,11 +5,13 @@ from .models import ForecastDataModel, ForecastResultModel, ForecastTiggerModel
 
 # Register your models here.
 
+
 @admin.register(BlockInfo)
 class BlockInfoAdmin(admin.ModelAdmin):
     list_display = ("block_count", "basefee", "epoch", "created")
     search_fields = list_display
     list_filter = list_display
+
 
 @admin.register(BlockCateInfo)
 class BlockCateInfoAdmin(admin.ModelAdmin):
@@ -17,11 +19,13 @@ class BlockCateInfoAdmin(admin.ModelAdmin):
     search_fields = list_display
     list_filter = list_display
 
+
 @admin.register(MpoolInfo)
 class MpoolInfoAdmin(admin.ModelAdmin):
     list_display = ("created", "epoch")
     search_fields = list_display
     list_filter = list_display
+
 
 @admin.register(MpoolCateInfo)
 class MpoolCateInfoAdmin(admin.ModelAdmin):
@@ -29,13 +33,19 @@ class MpoolCateInfoAdmin(admin.ModelAdmin):
     search_fields = list_display
     list_filter = list_display
 
+
 # /////////////////////////////////////////////////////
+
 
 @admin.register(TrainingBlockModel)
 class TrainingBlockModelAdmin(admin.ModelAdmin):
-    list_display = ("epoch", "empty_num", "block_count", "parent_basefee", "count_block", "limit_total_block", "limit_avg_block", "cap_total_block", "cap_avg_block", "premium_total_block", "premium_avg_block")
+    list_display = ("epoch", "empty_num", "block_count", "parent_basefee",
+                    "count_block", "limit_total_block", "limit_avg_block",
+                    "cap_total_block", "cap_avg_block", "premium_total_block",
+                    "premium_avg_block")
     search_fields = ("epoch", "block_count")
     list_filter = search_fields
+
 
 @admin.register(TrainingResultModel)
 class TrainingResultModelAdmin(admin.ModelAdmin):
@@ -43,19 +53,26 @@ class TrainingResultModelAdmin(admin.ModelAdmin):
     search_fields = list_display
     list_filter = search_fields
 
+
 @admin.register(TrainTiggerModel)
 class TrainTiggerModelAdmin(admin.ModelAdmin):
     list_display = ("epoch", "isOk")
     search_fields = list_display
     list_filter = search_fields
 
+
 # ////////////////////////////////////////////////////
+
 
 @admin.register(ForecastDataModel)
 class ForecastDataModelAdmin(admin.ModelAdmin):
-    list_display = ("epoch", "empty_num", "block_count", "parent_basefee", "count_block", "limit_total_block", "limit_avg_block", "cap_total_block", "cap_avg_block", "premium_total_block", "premium_avg_block")
+    list_display = ("epoch", "empty_num", "block_count", "parent_basefee",
+                    "count_block", "limit_total_block", "limit_avg_block",
+                    "cap_total_block", "cap_avg_block", "premium_total_block",
+                    "premium_avg_block")
     search_fields = ("epoch", "block_count")
     list_filter = search_fields
+
 
 @admin.register(ForecastResultModel)
 class ForecastResultModelAdmin(admin.ModelAdmin):
@@ -69,4 +86,3 @@ class ForecastTiggerModelAdmin(admin.ModelAdmin):
     list_display = ("epoch", "isOk")
     search_fields = list_display
     list_filter = search_fields
-

@@ -19,6 +19,7 @@ from .serializers import ForecastDataSerializer, ForecastResultSerializer, Forec
 from .train import Training
 from .consts import ORIGINAL_DATA_FILE
 
+
 class ForecastTiggerView(APIView):
     def get(self, request):
         """
@@ -87,7 +88,7 @@ class TrainningDataView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
-        
+
         # save to csv
         columns_title = [
             "epoch", "empty_num", "block_count", "parent_basefee",
@@ -106,7 +107,7 @@ class TrainningDataView(generics.ListCreateAPIView):
                 ele.premium_total_block, ele.premium_avg_block, ele.backward, 0
             ]
             csv_file.append(tmp)
-            
+
         df_i = pd.DataFrame(csv_file, columns=columns_title)
         df_i.to_csv(ORIGINAL_DATA_FILE, index=False)
 
