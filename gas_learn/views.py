@@ -17,8 +17,8 @@ from .serializers import TrainingBlockSerializer, TrainingResultSerializer, Trai
 from .serializers import ForecastDataSerializer, ForecastResultSerializer, ForecastTiggerSerializer
 
 from .train import Training
+from .forecast import Forecastting
 from .consts import ORIGINAL_DATA_FILE
-
 
 class ForecastTiggerView(APIView):
     def get(self, request):
@@ -31,8 +31,9 @@ class ForecastTiggerView(APIView):
         """
         ForecastTiggerView
         """
-        train_obj = Training(count=100)
-        train_obj.train()
+        fore_obj = Forecastting()
+        is_incrase, proba_positive, proba_negtive = fore_obj.forecast(ORIGINAL_DATA_FILE)
+        print(is_incrase, proba_negtive, proba_positive)
         return Response(status=status.HTTP_200_OK)
 
 
@@ -67,15 +68,16 @@ class ForecastResultDetailView(generics.RetrieveAPIView):
 class TrainingTiggerView(APIView):
     def get(self, request):
         """
-        TrainningTiggerView
+        TrainningTiggerView get
         """
         return Response(status=status.HTTP_200_OK)
 
     def post(self, request):
         """
-        TrainningTiggerView
+        TrainningTiggerView post
         """
-
+        train_obj = Training()
+        train_obj.train(ORIGINAL_DATA_FILE)
         return Response(status=status.HTTP_200_OK)
 
 

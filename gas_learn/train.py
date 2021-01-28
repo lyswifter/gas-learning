@@ -11,16 +11,14 @@ from sklearn.preprocessing import MinMaxScaler
 from .consts import ORIGINAL_DATA_FILE
 
 class Training:
-    cou = 0
 
-    def __init__(self, count):
-        self.cou = count
+    # def __init__(self):
 
     """
     train func
     """
-    def train(self):
-        gas = pd.read_csv(ORIGINAL_DATA_FILE)
+    def train(self, file_path):
+        gas = pd.read_csv(file_path)
 
         rate_all = [1.6180339887, 2.058, 2.6180339887, 3.33, 4.236]
         forecast_l_all = [

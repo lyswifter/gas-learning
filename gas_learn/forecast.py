@@ -10,28 +10,26 @@ from sklearn.preprocessing import MinMaxScaler
 
 from .consts import ORIGINAL_DATA_FILE
 
+
 class Forecastting:
 
-    cou = 0
-
-    def __init__(self, count):
-        self.cou = count
-
-    def forecast(self):
+    def forecast(self, file_path):
         L2LR = pickle.load(open('L2LR.pickle', 'rb'))
 
-        gas=pd.read_csv(ORIGINAL_DATA_FILE)
+        gas = pd.read_csv(file_path)
 
         rate_all = [1.6180339887, 2.058, 2.6180339887, 3.33, 4.236]
         forecast_l_all = [
-            157.08203932948422, 135.55, 127.0820393254225, 123.34, 121.59971939649687
+            157.08203932948422, 135.55, 127.0820393254225, 123.34,
+            121.59971939649687
         ]
         score = [0, 0, 0, 0, 0]
         forecast = [0, 0, 0, 0, 0]
 
         gas = gas.iloc[len(gas) - 10000:len(gas), :]
-        gas = gas.drop(
-            columns=['epoch', 'limit_avg_block', 'cap_avg_block', 'premium_avg_block'])
+        gas = gas.drop(columns=[
+            'epoch', 'limit_avg_block', 'cap_avg_block', 'premium_avg_block'
+        ])
 
         fee = gas.parent_basefee.copy()
         gas = gas.drop(columns=['parent_basefee'])
@@ -63,20 +61,25 @@ class Forecastting:
             rate_f = 4
             fee_range = 2064
 
-        gas = pd.concat([gas, (fee.rolling(round(5 * rate_all[rate_f])).median())],
-                        axis=1)
-        gas = pd.concat([gas, (fee.rolling(round(8 * rate_all[rate_f])).median())],
-                        axis=1)
-        gas = pd.concat([gas, (fee.rolling(round(13 * rate_all[rate_f])).median())],
-                        axis=1)
-        gas = pd.concat([gas, (fee.rolling(round(21 * rate_all[rate_f])).median())],
-                        axis=1)
-        gas = pd.concat([gas, (fee.rolling(round(34 * rate_all[rate_f])).median())],
-                        axis=1)
-        gas = pd.concat([gas, (fee.rolling(round(55 * rate_all[rate_f])).median())],
-                        axis=1)
-        gas = pd.concat([gas, (fee.rolling(round(89 * rate_all[rate_f])).median())],
-                        axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(5 * rate_all[rate_f])).median())], axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(8 * rate_all[rate_f])).median())], axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(13 * rate_all[rate_f])).median())],
+            axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(21 * rate_all[rate_f])).median())],
+            axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(34 * rate_all[rate_f])).median())],
+            axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(55 * rate_all[rate_f])).median())],
+            axis=1)
+        gas = pd.concat(
+            [gas, (fee.rolling(round(89 * rate_all[rate_f])).median())],
+            axis=1)
 
         gas.block_count = gas.block_count.rolling(120).mean()
         gas.count_block = gas.count_block.rolling(120).mean()
@@ -84,24 +87,32 @@ class Forecastting:
         gas.cap_total_block = gas.cap_total_block.rolling(120).median()
         gas.premium_total_block = gas.premium_total_block.rolling(120).median()
 
-        gas = pd.concat(
-            [gas, gas.block_count.rolling(round(120 * rate_all[rate_f])).mean()],
-            axis=1)
-        gas = pd.concat(
-            [gas, gas.count_block.rolling(round(120 * rate_all[rate_f])).mean()],
-            axis=1)
         gas = pd.concat([
             gas,
-            gas.limit_total_block.rolling(round(120 * rate_all[rate_f])).median()
+            gas.block_count.rolling(round(120 * rate_all[rate_f])).mean()
         ],
                         axis=1)
-        gas = pd.concat(
-            [gas,
-            gas.cap_total_block.rolling(round(120 * rate_all[rate_f])).median()],
-            axis=1)
         gas = pd.concat([
             gas,
-            gas.premium_total_block.rolling(round(120 * rate_all[rate_f])).median()
+            gas.count_block.rolling(round(120 * rate_all[rate_f])).mean()
+        ],
+                        axis=1)
+        gas = pd.concat([
+            gas,
+            gas.limit_total_block.rolling(round(
+                120 * rate_all[rate_f])).median()
+        ],
+                        axis=1)
+        gas = pd.concat([
+            gas,
+            gas.cap_total_block.rolling(round(
+                120 * rate_all[rate_f])).median()
+        ],
+                        axis=1)
+        gas = pd.concat([
+            gas,
+            gas.premium_total_block.rolling(round(
+                120 * rate_all[rate_f])).median()
         ],
                         axis=1)
 
@@ -114,7 +125,8 @@ class Forecastting:
         tmp = my_scaler.fit_transform(tmp).copy()
         gas_test.loc[:, :] = tmp.copy()
         gas_test = pd.DataFrame(
-            pd.DataFrame(gas_test.iloc[len(gas_test) - 1, :]).values.reshape(1, 19))
+            pd.DataFrame(gas_test.iloc[len(gas_test) - 1, :]).values.reshape(
+                1, 19))
 
         fee_percent = [
             round(0.0296 * fee_range),
@@ -131,16 +143,17 @@ class Forecastting:
         _fee_test_raw = fee.iloc[len(gas) - 1].copy()
 
         fee_test = [
-            _fee_test_raw, _fee_test_raw, _fee_test_raw, _fee_test_raw, _fee_test_raw,
-            _fee_test_raw, _fee_test_raw, _fee_test_raw, _fee_test_raw, _fee_test_raw,
-            _fee_test_raw
+            _fee_test_raw, _fee_test_raw, _fee_test_raw, _fee_test_raw,
+            _fee_test_raw, _fee_test_raw, _fee_test_raw, _fee_test_raw,
+            _fee_test_raw, _fee_test_raw, _fee_test_raw
         ]
         fee_test = pd.DataFrame(pd.DataFrame(fee_test).values.reshape(1, 11))
 
         for i in range(1, 11):
             fee_test.iloc[0, i] = 0
 
-        fee_test_raw = fee.iloc[len(gas) - fee_range:len(gas)].copy().sort_values()
+        fee_test_raw = fee.iloc[len(gas) -
+                                fee_range:len(gas)].copy().sort_values()
 
         if (fee_test.iloc[0, 0] >= fee_test_sort.iloc[fee_percent[8]]):
             fee_test.iloc[0, 1] = 1
@@ -166,9 +179,11 @@ class Forecastting:
         fee_test = fee_test.iloc[:, 1:]
         gas_test = pd.concat(
             [gas_test.reset_index(drop=True),
-            fee_test.reset_index(drop=True)], axis=1)
+             fee_test.reset_index(drop=True)],
+            axis=1)
 
         isIncrease = L2LR.predict(gas_test)
         proba_positive, proba_negtive = L2LR.predict_proba(gas_test)
-
         print(isIncrease, proba_negtive, proba_positive)
+        
+        return isIncrease, proba_positive, proba_negtive
