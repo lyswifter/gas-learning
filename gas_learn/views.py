@@ -30,9 +30,6 @@ class ForecastTiggerView(APIView):
         """
         ForecastTiggerView
         """
-        # sts = call("python3 /home/ly/training.py", shell=True)
-        # print(sts)
-
         train_obj = Training(count=100)
         train_obj.train()
         return Response(status=status.HTTP_200_OK)
@@ -89,8 +86,9 @@ class TrainningDataView(generics.ListCreateAPIView):
     serializer_class = TrainingBlockSerializer
 
     def perform_create(self, serializer):
+        serializer.save()
+        
         # save to csv
-
         columns_title = [
             "epoch", "empty_num", "block_count", "parent_basefee",
             "count_block", "limit_total_block", "limit_avg_block",
@@ -108,11 +106,9 @@ class TrainningDataView(generics.ListCreateAPIView):
                 ele.premium_total_block, ele.premium_avg_block, ele.backward, 0
             ]
             csv_file.append(tmp)
-
+            
         df_i = pd.DataFrame(csv_file, columns=columns_title)
         df_i.to_csv(ORIGINAL_DATA_FILE, index=False)
-
-        serializer.save()
 
 
 class TrainingResultView(generics.ListCreateAPIView):
