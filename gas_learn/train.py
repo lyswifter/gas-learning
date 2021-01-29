@@ -8,6 +8,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 
+from .consts import L2LR_PICKLE_FILE
+
 class Training:
     def train(self, file_path):
         gas = pd.read_csv(file_path)
@@ -227,5 +229,5 @@ class Training:
                                   axis=0)
             L2LR = LogisticRegression(penalty='l2', C=0.618, max_iter=900000)
             L2LR.fit(gas_train, tar_train.values.ravel())
-            with open('L2LR.pickle', 'wb') as f:
+            with open(L2LR_PICKLE_FILE, 'wb') as f:
                 pickle.dump(L2LR, f)
