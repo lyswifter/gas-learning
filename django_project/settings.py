@@ -25,7 +25,7 @@ SECRET_KEY = 'phs6-bbyma04e6&9dad=(84#umce^hs+lb1st$*ygyc7k#lenx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
