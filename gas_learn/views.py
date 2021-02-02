@@ -20,6 +20,7 @@ from .train import Training
 from .forecast import Forecastting
 from .consts import ORIGINAL_DATA_FILE
 
+
 class ForecastTiggerView(APIView):
     def get(self, request):
         """
@@ -31,9 +32,27 @@ class ForecastTiggerView(APIView):
         """
         ForecastTiggerView
         """
+
+        req = request.data
+        print(req)
+
         fore_obj = Forecastting()
-        is_incrase, proba_positive, proba_negtive = fore_obj.forecast(ORIGINAL_DATA_FILE)
+        is_incrase, proba_positive, proba_negtive = fore_obj.forecast(
+            ORIGINAL_DATA_FILE)
         print(is_incrase, proba_negtive, proba_positive)
+
+        s_set = ForecastResultSerializer(
+            data={
+                "epoch": req.epoch,
+                "parent_basefee": 0,
+                "delta": 0,
+                "isPostive": is_incrase,
+                "delta_proba": proba_positive,
+            })
+
+        if s_set.is_valid():
+            s_set.save()
+
         return Response(status=status.HTTP_200_OK)
 
 
